@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Manage User Settings</title>
+</head>
+<body>
+    <h1>Manage User Settings for {{ username }}</h1>
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <h2>Allergies</h2>
+    <ul>
+        {% for allergy in allergies %}
+        <li>{{ allergy }}</li>
+        {% endfor %}
+    </ul>
+    <form method="POST">
+        <input type="hidden" name="action" value="add_allergy">
+        <label for="ingredient">Add Allergy:</label>
+        <input type="text" id="ingredient" name="ingredient" required>
+        <button type="submit">Add Allergy</button>
+    </form>
+
+    <h2>Who You Can Wash For</h2>
+    <ul>
+        {% for person in can_wash %}
+        <li>{{ person }}</li>
+        {% endfor %}
+    </ul>
+    <form method="POST">
+        <input type="hidden" name="action" value="add_can_wash">
+        <label for="washee">Add Washee:</label>
+        <input type="text" id="washee" name="washee" required>
+        <button type="submit">Add</button>
+    </form>
+    <form method="POST">
+        <input type="hidden" name="action" value="remove_can_wash">
+        <label for="washee">Remove Washee:</label>
+        <input type="text" id="washee" name="washee" required>
+        <button type="submit">Remove</button>
+    </form>
+
+    <h2>Liked Cleaners</h2>
+    <ul>
+        {% for cleaner in liked_cleaners %}
+        <li>{{ cleaner }}</li>
+        {% endfor %}
+    </ul>
+    <form method="POST">
+        <input type="hidden" name="action" value="add_likes">
+        <label for="cleaner">Add Cleaner:</label>
+        <input type="text" id="cleaner" name="cleaner" required>
+        <button type="submit">Add Cleaner</button>
+    </form>
+</body>
+</html>

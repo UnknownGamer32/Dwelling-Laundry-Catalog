@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Do Laundry</title>
+</head>
+<body>
+    <h1>Do Laundry for {{ username }}</h1>
+    <form method="GET">
+        <label for="cleaner">Select Cleaner:</label>
+        <select id="cleaner" name="cleaner" onchange="this.form.submit()">
+            <option value="" disabled selected>Select a cleaner</option>
+            {% for cleaner in cleaners %}
+                <option value="{{ cleaner.address }}" {% if cleaner.address == request.args.get('cleaner') %}selected{% endif %}>
+                    {{ cleaner.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if cleaning_methods %}
+    <form method="POST">
+        <label for="cleaning_method">Select Cleaning Method:</label>
+        <select id="cleaning_method" name="cleaning_method">
+            {% for method in cleaning_methods %}
+                <option value="{{ method.wash_method }}-{{ method.detergent }}-{{ method.dry_method }}">
+                    Wash: {{ method.wash_method }}, Detergent: {{ method.detergent }}, Dry: {{ method.dry_method }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <h3>Select Laundry to Clean:</h3>
+        {% for item in laundry_items %}
+        <input type="checkbox" id="laundry_{{ item.id }}" name="laundry_ids" value="{{ item.id }}">
+        <label for="laundry_{{ item.id }}">{{ item.description }} ({{ item.location }})</label><br>
+        {% endfor %}
+
+        <button type="submit">Mark Clean</button>
+    </form>
+    {% endif %}
+</body>
+</html>

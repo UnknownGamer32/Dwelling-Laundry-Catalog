@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Mark Clothes Dirty</title>
+</head>
+<body>
+    <h1>Mark Clothes Dirty for {{ username }}</h1>
+    {% if laundry %}
+    <form method="POST">
+        <h3>Select Clothes to Mark as Dirty:</h3>
+        {% for item in laundry %}
+        <input type="checkbox" id="laundry_{{ item.id }}" name="laundry_ids" value="{{ item.id }}">
+        <label for="laundry_{{ item.id }}">{{ item.description }} ({{ item.location }})</label><br>
+        {% endfor %}
+
+        <button type="submit">Mark Dirty</button>
+    </form>
+    {% else %}
+    <p>All clothes are already dirty.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Main Menu</title>
+</head>
+<body>
+    <h1>Main Menu</h1>
+    <p>Welcome, {{ username }}!</p>
+    <ul>
+        <li><a href="/laundry/{{ username }}">Do Laundry</a></li>
+        <li><a href="/mark_dirty/{{ username }}">Mark Dirty</a></li>
+        <li><a href="/edit_menu/{{ username }}">Edit</a></li>
+        <li><a href="/">Logout</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Manage Laundry</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle Edit Laundry
+            $(document).on("submit", ".edit-form", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: $(this).serialize() + "&action=edit",
+                    success: function (response) {
+                        $("#existing-laundry").html(response);
+                    },
+                });
+            });
+
+            // Handle Delete Laundry
+            $(document).on("submit", ".delete-form", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: $(this).serialize() + "&action=delete",
+                    success: function (response) {
+                        $("#existing-laundry").html(response);
+                    },
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Manage Laundry for {{ username }}</h1>
+    <h3>Existing Laundry:</h3>
+    <div id="existing-laundry">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Location</th>
+                <th>Special Instructions</th>
+                <th>Dirty</th>
+                <th>Volume</th>
+                <th>Actions</th>
+            </tr>
+            {% for item in laundry %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.location }}</td>
+                <td>{{ item.special_instructions }}</td>
+                <td>{{ 'Yes' if item.dirty else 'No' }}</td>
+                <td>{{ item.volume }}</td>
+                <td>
+                    <form class="edit-form">
+                        <input type="hidden" name="laundry_id" value="{{ item.id }}">
+                        <label>Description:</label>
+                        <input type="text" name="description" value="{{ item.description }}"><br>
+                        <label>Location:</label>
+                        <input type="text" name="location" value="{{ item.location }}"><br>
+                        <label>Special Instructions:</label>
+                        <input type="text" name="special_instructions" value="{{ item.special_instructions }}"><br>
+                        <label>Dirty:</label>
+                        <select name="dirty">
+                            <option value="1" {% if item.dirty %}selected{% endif %}>Yes</option>
+                            <option value="0" {% if not item.dirty %}selected{% endif %}>No</option>
+                        </select><br>
+                        <label>Volume:</label>
+                        <input type="number" name="volume" value="{{ item.volume }}"><br>
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form class="delete-form">
+                        <input type="hidden" name="laundry_id" value="{{ item.id }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

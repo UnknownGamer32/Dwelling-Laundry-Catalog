@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Manage Detergents</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle Edit Detergent Properties
+            $(document).on("submit", ".edit-form", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: $(this).serialize() + "&action=edit",
+                    success: function (response) {
+                        $("#detergent-table").html($(response).find("#detergent-table").html());
+                    },
+                });
+            });
+
+            // Handle Delete Detergent
+            $(document).on("submit", ".delete-form", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: $(this).serialize() + "&action=delete",
+                    success: function (response) {
+                        $("#detergent-table").html($(response).find("#detergent-table").html());
+                    },
+                });
+            });
+
+            // Handle Add Detergent Ingredient
+            $(document).on("submit", ".add-ingredient-form", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: $(this).serialize() + "&action=add_ingredient",
+                    success: function (response) {
+                        alert("Ingredient added successfully!");
+                    },
+                });
+            });
+
+            // Handle Rename Detergent
+            $(document).on("submit", ".rename-form", function (e) {
+                e.preventDefault();
+                const form = $(this);
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: form.serialize() + "&action=rename",
+                    success: function (response) {
+                        $("#detergent-table").html($(response).find("#detergent-table").html());
+                        form.find("button[type='submit']").hide(); // Hide rename button
+                    },
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Manage Detergents</h1>
+    <h3>Existing Detergents:</h3>
+    <div id="detergent-table">
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>For Darks</th>
+                <th>For Lights</th>
+                <th>Whitens</th>
+                <th>Actions</th>
+            </tr>
+            {% for detergent in detergents %}
+            <tr>
+                <td>{{ detergent.name }}</td>
+                <td>{{ 'Yes' if detergent.for_darks else 'No' }}</td>
+                <td>{{ 'Yes' if detergent.for_lights else 'No' }}</td>
+                <td>{{ 'Yes' if detergent.whitens else 'No' }}</td>
+                <td>
+                    <!-- Edit Form -->
+                    <form class="edit-form">
+                        <input type="hidden" name="name" value="{{ detergent.name }}">
+                        <label>For Darks:</label>
+                        <input type="checkbox" name="for_darks" {% if detergent.for_darks %}checked{% endif %}>
+                        <label>For Lights:</label>
+                        <input type="checkbox" name="for_lights" {% if detergent.for_lights %}checked{% endif %}>
+                        <label>Whitens:</label>
+                        <input type="checkbox" name="whitens" {% if detergent.whitens %}checked{% endif %}>
+                        <button type="submit">Edit</button>
+                    </form>
+                    <!-- Rename Form -->
+                    <form class="rename-form">
+                        <input type="hidden" name="old_name" value="{{ detergent.name }}">
+                        <label>New Name:</label>
+                        <input type="text" name="new_name" required>
+                        <button type="submit">Rename</button>
+                    </form>
+                    <!-- Delete Form -->
+                    <form class="delete-form">
+                        <input type="hidden" name="name" value="{{ detergent.name }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <!-- Add Ingredient Form -->
+                    <form class="add-ingredient-form">
+                        <input type="hidden" name="detergent_name" value="{{ detergent.name }}">
+                        <label>Add Ingredient:</label>
+                        <input type="text" name="ingredient_name" required>
+                        <button type="submit">Add Ingredient</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

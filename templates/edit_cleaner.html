@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Manage Cleaners</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle Edit Cleaner
+            $(document).on("submit", ".edit-form", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: $(this).serialize() + "&action=edit",
+                    success: function (response) {
+                        $("#cleaner-table").html($(response).find("#cleaner-table").html());
+                    },
+                });
+            });
+
+            // Handle Delete Cleaner
+            $(document).on("submit", ".delete-form", function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "",
+                    method: "POST",
+                    data: $(this).serialize() + "&action=delete",
+                    success: function (response) {
+                        $("#cleaner-table").html($(response).find("#cleaner-table").html());
+                    },
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Manage Cleaners</h1>
+    <h3>Existing Cleaners:</h3>
+    <div id="cleaner-table">
+        <table border="1">
+            <tr>
+                <th>Address</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+            {% for cleaner in cleaners %}
+            <tr>
+                <td>{{ cleaner.address }}</td>
+                <td>
+                    <form class="edit-form">
+                        <input type="hidden" name="address" value="{{ cleaner.address }}">
+                        <input type="text" name="name" value="{{ cleaner.name }}" required>
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form class="delete-form">
+                        <input type="hidden" name="address" value="{{ cleaner.address }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Edit Menu</title>
+</head>
+<body>
+    <h1>Edit Menu for {{ username }}</h1>
+    <ul>
+        <li><a href="/edit/laundry/{{ username }}">Manage Laundry</a></li>
+        <li><a href="/edit/detergent">Manage Detergents</a></li>
+        <li><a href="/edit/cleaner">Manage Cleaners</a></li>
+        <li><a href="/edit/user/{{ username }}">Manage User Settings</a></li>
+    </ul>
+</body>
+</html>
